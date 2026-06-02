@@ -1,0 +1,26 @@
+void quicksort(int a[],int low,int high){
+    int i,j,pivot,temp;
+    if(low<high){
+        pivot=a[low];
+        i=low;
+        j=high;
+        while(i<j){
+            while(a[i]<=pivot && i<high)
+                i++;
+            while(a[j]>pivot)
+                j--;
+            if(i<j){
+                temp=a[i];
+                a[i]=a[j];
+                a[j]=temp;
+            }
+        }
+        temp=a[low];
+        a[low]=a[j];
+        a[j]=temp;
+        quicksort(a,low,j-1);
+        quicksort(a,j+1,high);}}
+int* sortArray(int* nums, int numsSize, int* returnSize) {
+    quicksort(nums,0,numsSize-1);
+    *returnSize=numsSize;
+    return nums;
