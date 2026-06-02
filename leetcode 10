@@ -1,0 +1,24 @@
+int p[1000];
+int f(int x){
+    return p[x]==x?x:(p[x]=f(p[x]));}
+int cmp(const void *a,const void *b){
+    return ((int*)a)[2]-((int*)b)[2];}
+int minCostConnectPoints(int** points,int n,int* c){
+    int e[100000][3],k=0;
+    for(int i=0;i<n;i++)
+        for(int j=i+1;j<n;j++){
+            e[k][0]=i;
+            e[k][1]=j;
+            e[k][2]=abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1]);
+            k++;
+    qsort(e,k,sizeof(e[0]),cmp);
+    for(int i=0;i<n;i++) p[i]=i;
+    int ans=0,cnt=0;
+    for(int i=0;i<k&&cnt<n-1;i++){
+        int a=f(e[i][0]),b=f(e[i][1]);
+        if(a!=b){
+            p[a]=b;
+            ans+=e[i][2];
+            cnt++;}
+    return ans;
+}
