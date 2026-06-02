@@ -1,0 +1,46 @@
+program:
+#include <stdbool.h>
+#include <stdlib.h>
+bool dfs(int node, int* vis, int* pathVis,
+         int** graph, int* graphSize) {
+    vis[node] = 1;
+    pathVis[node] = 1;
+    for(int i = 0; i < graphSize[node]; i++) {
+        int next = graph[node][i];
+        if(!vis[next]) {
+            if(dfs(next, vis, pathVis, graph, graphSize))
+                return true;
+        }
+        else if(pathVis[next]) {
+            return true;
+        }
+    }
+    pathVis[node] = 0;
+    return false;
+}
+bool canFinish(int numCourses,
+               int** prerequisites,
+               int
+ prerequisitesSize,
+               int* prerequisitesColSize) {
+
+    int** graph = malloc(numCourses * sizeof(int*));
+    int* graphSize = calloc(numCourses, sizeof(int));
+    for(int i = 0; i < numCourses; i++) {
+        graph[i] = malloc(numCourses * sizeof(int));
+    }
+    for(int i = 0; i < prerequisitesSize; i++) {
+        int a = prerequisites[i][0];
+        int b = prerequisites[i][1];
+        graph[b][graphSize[b]++] = a;
+    }
+    int* vis = calloc(numCourses, sizeof(int));
+    int* pathVis = calloc(numCourses, sizeof(int));
+    for(int i = 0; i < numCourses; i++) {
+        if(!vis[i]) {
+            if(dfs(i, vis, pathVis, graph, graphSize))
+                return false;
+        }
+    }
+    return true;
+}
