@@ -1,0 +1,19 @@
+int minCostConnectPoints(int** points, int pointsSize, int* pointsColSize) {
+    int visited[1000]={0},minDist[1000];
+    for(int i=0;i<pointsSize;i++) minDist[i]=1000000;
+    minDist[0]=0;
+    int cost=0;
+
+    for(int i=0;i<pointsSize;i++){
+        int u=-1;
+        for(int j=0;j<pointsSize;j++){
+            if(!visited[j]&&(u==-1||minDist[j]<minDist[u]))
+                u=j;}
+        visited[u]=1;
+        cost+=minDist[u];
+        for(int v=0;v<pointsSize;v++){
+            int
+ d=abs(points[u][0]-points[v][0])+abs(points[u][1]-points[v][1]);
+            if(!visited[v]&&d<minDist[v])
+                minDist[v]=d;}}
+    return cost;}
