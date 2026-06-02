@@ -1,0 +1,33 @@
+typedef struct{
+    int node,dist;
+}Pair;
+int networkDelayTime(int** times,int timesSize,int* timesColSize,int n,int k){
+    int g[101][101],d[101],v[101]={0};
+    for(int i=1;i<=n;i++)
+        for(int j=1;j<=n;j++)
+            g[i][j]=1e9;
+    for(int i=0;i<timesSize;i++)
+        g[times[i][0]][times[i][1]]=times[i][2];
+    for(int i=1;i<=n;i++)
+        d[i]=1e9;
+    d[k]=0;
+    for(int c=1;c<=n;c++){
+        int m=1e9,u=-1;
+        for(int i=1;i<=n;i++)
+            if(!v[i]&&d[i]<m){
+                m=d[i];
+                u=i;}
+        if(u==-1) break;
+        v[u]=1;
+        for(int j=1;j<=n;j++)
+            if(d[u]+g[u][j]<d[j])
+                d[j]=d[u]+g[u][j];
+}
+    int ans=0;
+    for(int i=1;i<=n;i++){
+        if(d[i]==1e9) return -1;
+
+        if(d[i]>ans) ans=d[i];
+    }
+    return ans;
+}
