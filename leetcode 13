@@ -1,0 +1,36 @@
+int n;
+char*** ans;
+int sz;
+int col[20],d1[40],d2[40];
+char** makeBoard(int *pos){
+    char **b=malloc(n*sizeof(char*));
+    for(int i=0;i<n;i++){
+        b[i]=malloc((n+1)*sizeof(char));
+        for(int j=0;j<n;j++)
+            b[i][j]='.';
+        b[i][pos[i]]='Q';
+        b[i][n]='\0';}
+    return b;
+}
+void f(int r,int *pos){
+    if(r==n){
+        ans[sz++]=makeBoard(pos);
+        return;}
+    for(int c=0;c<n;c++){
+        if(!col[c]&&!d1[r-c+n]&&!d2[r+c]){
+            col[c]=d1[r-c+n]=d2[r+c]=1;
+            pos[r]=c;
+            f(r+1,pos);
+            col[c]=d1[r-c+n]=d2[r+c]=0;}}}
+char*** solveNQueens(int x,int* returnSize,int** returnColumnSizes){
+    n=x;
+    sz=0;
+    ans=malloc(1000*sizeof(char**));
+    int *pos=malloc(n*sizeof(int));
+    f(0,pos);
+    *returnSize=sz;
+    *returnColumnSizes=malloc(sz*sizeof(int));
+    for(int i=0;i<sz;i++)
+        (*returnColumnSizes)[i]=n;
+    return ans;
+}
